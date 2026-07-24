@@ -85,7 +85,13 @@
 	}
 
 	section.guide-section {
-		margin-bottom: 3.5em;
+		margin-bottom: 7em;
+	}
+
+	/* styleguide.css applies a background to :target (".anchors: make em shiny") —
+	   suppress that specifically for the section jumped to from the sidebar nav */
+	section.guide-section:target {
+		background: none !important;
 	}
 
 	section.guide-section > h2 {
