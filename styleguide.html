@@ -9,6 +9,14 @@
 	/* ---- guide chrome only — none of these names collide with the arctos.css classes ---- */
 	*, *::before, *::after { box-sizing: border-box; }
 
+	html {
+		scroll-behavior: smooth;
+	}
+
+	section.guide-section {
+		scroll-margin-top: 1.5em;
+	}
+
 	.guide-shell {
 		display: grid;
 		grid-template-columns: 240px 1fr;
