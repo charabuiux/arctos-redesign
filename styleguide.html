@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arctos Styleguide</title>
+<link rel="stylesheet" href="styleguide.css">
+<style>
+	/* ---- guide chrome only — none of these names collide with the arctos.css classes ---- */
+	*, *::before, *::after { box-sizing: border-box; }
+
+	.guide-shell {
+		display: grid;
+		grid-template-columns: 240px 1fr;
+		min-height: 100vh;
+	}
+
+	.guide-nav {
+		background-color: var(--arctosdarkblue);
+		color: white;
+		padding: 1.5em 1em;
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		overflow-y: auto;
+	}
+
+	.guide-nav h1 {
+		font-size: 1.1em;
+		margin: 0 0 .25em 0;
+		color: white;
+	}
+
+	.guide-nav p.guide-tag {
+		font-size: .75em;
+		color: var(--arctoslightblue);
+		opacity: .7;
+		margin: 0 0 1.5em 0;
+	}
+
+	.guide-nav ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.guide-nav li a {
+		display: block;
+		padding: .4em .5em;
+		border-radius: 4px;
+		font-size: .85em;
+		color: var(--arctoslightblue) !important;
+	}
+
+	.guide-nav li a:hover {
+		background-color: rgba(255,255,255,.12);
+		text-decoration: none !important;
+		color: white !important;
+	}
+
+	.guide-main {
+		padding: 2em 3em 6em 3em;
+		max-width: 1000px;
+		min-width: 0;
+		overflow-x: hidden;
+	}
+
+	.guide-main > header {
+		margin-bottom: 2em;
+		border-bottom: 2px solid var(--arctosdarkblue);
+		padding-bottom: 1em;
+	}
+
+	.guide-main > header p {
+		max-width: 60ch;
+		color: #444;
+	}
+
+	section.guide-section {
+		margin-bottom: 3.5em;
+	}
+
+	section.guide-section > h2 {
+		font-size: 1.5em;
+		color: var(--arctosdarkblue);
+		border-bottom: 1px solid var(--arctoshighlightcolor);
+		padding-bottom: .3em;
+		margin-bottom: .3em;
+	}
+
+	section.guide-section > p.guide-desc {
+		color: #555;
+		margin-top: 0;
+		margin-bottom: 1.5em;
+		max-width: 70ch;
+	}
+
+	.guide-block {
+		margin-bottom: 2em;
+	}
+
+	.guide-block h3 {
+		font-size: 1em;
+		margin-bottom: .4em;
+		display: flex;
+		align-items: center;
+		gap: .6em;
+		flex-wrap: wrap;
+	}
+
+	.guide-block h3 code {
+		font-size: .85em;
+		font-weight: normal;
+		color: var(--arctosdarkblue);
+		background: var(--arctoslightstripecolor);
+		padding: .15em .5em;
+		border-radius: 3px;
+	}
+
+	.guide-note {
+		font-size: .8em;
+		color: #777;
+		font-weight: normal;
+	}
+
+	.guide-demo {
+		border: 1px solid var(--arctoshighlightcolor);
+		background-color: var(--arctoslightblue);
+		padding: 1.2em;
+		border-radius: 4px;
+		margin-bottom: .5em;
+	}
+
+	.guide-demo.guide-demo--white {
+		background-color: white;
+	}
+
+	.guide-swatchrow {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+		gap: 1em;
+	}
+
+	.guide-swatch {
+		border: 1px solid var(--arctoshighlightcolor);
+		border-radius: 6px;
+		overflow: hidden;
+	}
+
+	.guide-swatch-color {
+		height: 60px;
+	}
+
+	.guide-swatch-meta {
+		padding: .6em;
+		background: white;
+		font-size: .8em;
+	}
+
+	.guide-swatch-meta strong {
+		display: block;
+		font-size: .9em;
+		margin-bottom: .2em;
+	}
+
+	.guide-swatch-meta code {
+		display: block;
+		color: #666;
+		margin-bottom: .3em;
+	}
+
+	.guide-swatch-meta span {
+		display: block;
+		color: #777;
+	}
+
+	.guide-flex {
+		display: flex;
+		flex-wrap: wrap;
+		gap: .5em;
+		align-items: center;
+	}
+
+	.guide-btn-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: .3em .6em;
+		align-items: center;
+	}
+
+	.guide-btn-row .guide-btn-label {
+		font-size: .75em;
+		color: #666;
+		width: 100%;
+		margin-bottom: -.2em;
+	}
+
+	table.guide-classtable {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: .85em;
+		margin-top: .5em;
+	}
+
+	table.guide-classtable th,
+	table.guide-classtable td {
+		text-align: left;
+		padding: .5em .6em;
+		border-bottom: 1px solid #eee;
+		vertical-align: top;
+	}
+
+	table.guide-classtable th {
+		background: var(--arctoslightstripecolor);
+		color: var(--arctosdarkblue);
+	}
+
+	table.guide-classtable code {
+		color: var(--arctosdarkblue);
+		word-break: break-word;
+	}
+
+	.guide-toc-jump {
+		font-size: .75em;
+	}
+
+	@media screen and (max-width: 800px) {
+		.guide-shell {
+			grid-template-columns: 1fr;
+		}
+		.guide-nav {
+			position: relative;
+			height: auto;
+		}
+		.guide-main {
+			padding: 1.5em;
+		}
+	}
+</style>
+</head>
+<body>
+
+<div class="guide-shell">
+
+	<nav class="guide-nav">
+		<h1>Arctos Styleguide</h1>
+		<p class="guide-tag">Core design system reference</p>
+		<ul>
+			<li><a href="#colors">Color tokens</a></li>
+			<li><a href="#typography">Typography</a></li>
+			<li><a href="#notifications">Notifications &amp; alerts</a></li>
+			<li><a href="#links">Links</a></li>
+			<li><a href="#buttons">Buttons</a></li>
+			<li><a href="#status">Status &amp; state colors</a></li>
+			<li><a href="#forms">Forms &amp; inputs</a></li>
+			<li><a href="#tables">Tables</a></li>
+			<li><a href="#tooltips">Tooltips &amp; details</a></li>
+			<li><a href="#utilities">Utility classes</a></li>
+		</ul>
+	</nav>
+
+	<main class="guide-main">
+
+		<header>
+			<h1>Arctos Design System</h1>
+			<p>
+				This page documents the reusable, non-page-specific elements defined in <code>styleguide.css</code>
+				(sourced from the Arctos site-wide stylesheet): color tokens, typography, notifications, links,
+				buttons, status colors, form controls, tables, and small utilities. Page-specific layout rules
+				(navbar, footer, modal overlays, the GUID page, SpecimenDetail, taxonomy search, the datatables
+				search form) are intentionally out of scope — they depend on markup structures specific to those
+				pages rather than being drop-in, reusable patterns.
+			</p>
+		</header>
+
+		<!-- ============================================================ COLORS ============================================================ -->
+		<section class="guide-section" id="colors">
+			<h2>Color tokens</h2>
+			<p class="guide-desc">CSS custom properties defined on <code>:root</code>. Use these instead of hard-coded hex values wherever a matching purpose applies.</p>
+
+			<div class="guide-block">
+				<h3>Core palette</h3>
+				<div class="guide-swatchrow">
+					<div class="guide-swatch">
+						<div class="guide-swatch-color" style="background-color: var(--arctoslightblue);"></div>
+						<div class="guide-swatch-meta"><strong>Light blue</strong><code>--arctoslightblue</code><span>#F6F8FC — "not quite white" background</span></div>
+					</div>
+					<div class="guide-swatch">
+						<div class="guide-swatch-color" style="background-color: var(--arctosdarkblue);"></div>
+						<div class="guide-swatch-meta"><strong>Dark blue</strong><code>--arctosdarkblue</code><span>#113d64 — separator / brand color</span></div>
+					</div>
+					<div class="guide-swatch">
+						<div class="guide-swatch-color" style="background-color: var(--arctoslinkcolor);"></div>
+						<div class="guide-swatch-meta"><strong>Link color</strong><code>--arctoslinkcolor</code><span>#116AC4 — links &amp; link-like things</span></div>
+					</div>
+					<div class="guide-swatch">
+						<div class="guide-swatch-color" style="background-color: var(--arctosvisitedlinkcolor);"></div>
+						<div class="guide-swatch-meta"><strong>Visited link</strong><code>--arctosvisitedlinkcolor</code><span>#9D34C2</span></div>
+					</div>
+					<div class="guide-swatch">
+						<div class="guide-swatch-color" style="background-color: var(--arctoslinkhovercolor);"></div>
+						<div class="guide-swatch-meta"><strong>Link hover</strong><code>--arctoslinkhovercolor</code><span>#0000FF</span></div>
+					</div>
+					<div class="guide-swatch">
+						<div class="guide-swatch-color" style="background-color: var(--arctosnewreccolor);"></div>
+						<div class="guide-swatch-meta"><strong>New record</strong><code>--arctosnewreccolor</code><span>#D6F5F2 — inserting / new stuff</span></div>
+					</div>
+					<div class="guide-swatch">
+						<div class="guide-swatch-color" style="background-color: var(--arctosgreencolor);"></div>
+						<div class="guide-swatch-meta"><strong>Green</strong><code>--arctosgreencolor</code><span>#bed88f — data entry background</span></div>
+					</div>
+					<div class="guide-swatch">
+						<div class="guide-swatch-color" style="background-color: var(--arctosdarkstripecolor);"></div>
+						<div class="guide-swatch-meta"><strong>Dark stripe</strong><code>--arctosdarkstripecolor</code><span>#DAE3F3 — zebra striping (dark)</span></div>
+					</div>
+					<div class="guide-swatch">
+						<div class="guide-swatch-color" style="background-color: var(--arctoslightstripecolor);"></div>
+						<div class="guide-swatch-meta"><strong>Light stripe</strong><code>--arctoslightstripecolor</code><span>#EDF1F9 — zebra striping (light)</span></div>
+					</div>
+					<div class="guide-swatch">
+						<div class="guide-swatch-color" style="background-color: var(--arctoshighlightcolor);"></div>
+						<div class="guide-swatch-meta"><strong>Highlight</strong><code>--arctoshighlightcolor</code><span>#CCD7E9 — e.g. <code>:target</code></span></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3>Threat levels <span class="guide-note">0 = safest/easiest/most-open, increasing = more scary/hard/limited</span></h3>
+				<div class="guide-swatchrow">
+					<div class="guide-swatch">
+						<div class="guide-swatch-color" style="background-color: var(--arctos_level_0_color);"></div>
+						<div class="guide-swatch-meta"><strong>Level 0</strong><code>--arctos_level_0_color</code><span>#E6FFE9</span></div>
+					</div>
+					<div class="guide-swatch">
+						<div class="guide-swatch-color" style="background-color: var(--arctos_level_1_color);"></div>
+						<div class="guide-swatch-meta"><strong>Level 1</strong><code>--arctos_level_1_color</code><span>#F7F4DA</span></div>
+					</div>
+					<div class="guide-swatch">
+						<div class="guide-swatch-color" style="background-color: var(--arctos_level_2_color);"></div>
+						<div class="guide-swatch-meta"><strong>Level 2</strong><code>--arctos_level_2_color</code><span>#FFD580</span></div>
+					</div>
+					<div class="guide-swatch">
+						<div class="guide-swatch-color" style="background-color: var(--arctos_level_3_color);"></div>
+						<div class="guide-swatch-meta"><strong>Level 3</strong><code>--arctos_level_3_color</code><span>#FAA0A0</span></div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ============================================================ TYPOGRAPHY ============================================================ -->
+		<section class="guide-section" id="typography">
+			<h2>Typography</h2>
+			<p class="guide-desc">The stylesheet sets a single site-wide base — no heading scale is defined, so headings here reflect browser defaults on top of the base font.</p>
+			<div class="guide-block">
+				<h3><code>body</code></h3>
+				<div class="guide-demo guide-demo--white">
+					<p style="margin:0;">Arial, Helvetica, sans-serif · 16px base · white background</p>
+				</div>
+				<table class="guide-classtable">
+					<tr><th>Property</th><th>Value</th></tr>
+					<tr><td>font-family</td><td>Arial, Helvetica, sans-serif</td></tr>
+					<tr><td>font-size</td><td>16px</td></tr>
+					<tr><td>background-color</td><td>white</td></tr>
+				</table>
+			</div>
+			<div class="guide-block">
+				<h3><code>label</code></h3>
+				<div class="guide-demo guide-demo--white">
+					<label>Field label example</label>
+				</div>
+				<p class="guide-note">display: block · font-size: 12px · font-weight: 800</p>
+			</div>
+		</section>
+
+		<!-- ============================================================ NOTIFICATIONS ============================================================ -->
+		<section class="guide-section" id="notifications">
+			<h2>Notifications &amp; alerts</h2>
+			<p class="guide-desc">General-purpose callout boxes and inline emphasis styles for surfacing messages to users.</p>
+
+			<div class="guide-block">
+				<h3><code>.importantNotification</code> <span class="guide-note">big red border — urgent</span></h3>
+				<div class="guide-demo guide-demo--white">
+					<div class="importantNotification">This is an important notification.</div>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>.friendlyNotification</code> <span class="guide-note">big green border — positive</span></h3>
+				<div class="guide-demo guide-demo--white">
+					<div class="friendlyNotification">This is a friendly notification.</div>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>.alertNotification</code> <span class="guide-note">big orange border — general alert</span></h3>
+				<div class="guide-demo guide-demo--white">
+					<div class="alertNotification">This is an alert notification.</div>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>.deprecationNotice</code></h3>
+				<div class="guide-demo guide-demo--white">
+					<div class="deprecationNotice">This feature is deprecated and will be removed.</div>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>div.infoBox</code></h3>
+				<div class="guide-demo guide-demo--white">
+					<div class="infoBox">Supplemental info box.</div>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>.inlinedocs</code></h3>
+				<div class="guide-demo guide-demo--white">
+					<div class="inlinedocs">Documentation describing how this form works.</div>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>.highlight2</code> <span class="guide-note">helpful text</span></h3>
+				<div class="guide-demo guide-demo--white">
+					<div class="highlight2">Helpful highlighted text.</div>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>.highlight</code> / <code>.highlightst</code> <span class="guide-note">caution outline / search-term outline</span></h3>
+				<div class="guide-demo guide-demo--white">
+					<div class="guide-flex">
+						<span class="highlight" style="padding:.3em;display:inline-block;">.highlight</span>
+						<span class="highlightst" style="padding:.3em;display:inline-block;">.highlightst</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>.caution</code></h3>
+				<div class="guide-demo guide-demo--white">
+					<span class="caution">Caution: this action cannot be undone.</span>
+				</div>
+			</div>
+		</section>
+
+		<!-- ============================================================ LINKS ============================================================ -->
+		<section class="guide-section" id="links">
+			<h2>Links</h2>
+			<p class="guide-desc">Standard anchor states plus several "fake link" utility classes used on non-anchor elements to look/act clickable.</p>
+
+			<div class="guide-block">
+				<h3><code>a:link</code> / <code>a:visited</code> / <code>a:hover</code></h3>
+				<div class="guide-demo guide-demo--white">
+					<div class="guide-flex">
+						<a href="#">Unvisited link</a>
+						<a href="#colors">Visited link (try clicking)</a>
+						<a class="novisit" href="#">.novisit (pretend it's new)</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>.infoLink</code> <span class="guide-note">small fake link</span></h3>
+				<div class="guide-demo guide-demo--white"><span class="infoLink">more info</span></div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>.likeLink</code> <span class="guide-note">fake link on non-anchor elements</span></h3>
+				<div class="guide-demo guide-demo--white"><span class="likeLink">click-like text</span></div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>.ctDefLink</code> <span class="guide-note">code table definition link</span></h3>
+				<div class="guide-demo guide-demo--white"><span class="ctDefLink">code table term</span></div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>a.external</code> <span class="guide-note">appends an out-link icon</span></h3>
+				<div class="guide-demo guide-demo--white"><a class="external" href="#">External resource</a></div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>a.newWinLocal</code> <span class="guide-note">opens in a new tab, appends an info icon</span></h3>
+				<div class="guide-demo guide-demo--white"><a class="newWinLocal" href="#">Opens in new window</a></div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>a.handbook</code> <span class="guide-note">help-cursor, appends a "what's this" icon</span></h3>
+				<div class="guide-demo guide-demo--white"><a class="handbook" href="#">Handbook reference</a></div>
+			</div>
+
+			<p class="guide-note">Note: <code>.external</code>, <code>.newWinLocal</code>, and <code>.handbook</code> icons load from <code>/images/…</code> and won't render outside the Arctos site — the link behavior/spacing still applies here.</p>
+		</section>
+
+		<!-- ============================================================ BUTTONS ============================================================ -->
+		<section class="guide-section" id="buttons">
+			<h2>Buttons</h2>
+			<p class="guide-desc">Purpose-coded button classes — color communicates intent. Applied to <code>&lt;input&gt;</code> elements (<code>type="button"</code>/<code>submit</code>), with link-styled equivalents for anchors.</p>
+
+			<div class="guide-block">
+				<h3>Input button classes</h3>
+				<div class="guide-demo guide-demo--white">
+					<div class="guide-btn-row">
+						<input class="savBtn" type="button" value="Save (savBtn)">
+						<input class="lnkBtn" type="button" value="Go somewhere (lnkBtn)">
+						<input class="cstmBtn" type="button" value="Customize (cstmBtn)">
+						<input class="schBtn" type="button" value="Search (schBtn)">
+						<input class="insBtn" type="button" value="Insert (insBtn)">
+						<input class="picBtn" type="button" value="Pick list (picBtn)">
+						<input class="delBtn" type="button" value="Delete (delBtn)">
+						<input class="clrBtn" type="button" value="Clear/reset (clrBtn)">
+						<input class="qutBtn" type="button" value="Quit — deprecated (qutBtn)">
+					</div>
+				</div>
+				<table class="guide-classtable">
+					<tr><th>Class</th><th>Purpose</th></tr>
+					<tr><td><code>.savBtn</code></td><td>Save</td></tr>
+					<tr><td><code>.lnkBtn</code></td><td>Link — go somewhere not terribly scary</td></tr>
+					<tr><td><code>.cstmBtn</code></td><td>Customize something</td></tr>
+					<tr><td><code>.schBtn</code></td><td>Search — finds something</td></tr>
+					<tr><td><code>.insBtn</code></td><td>Insert — makes something new</td></tr>
+					<tr><td><code>.picBtn</code></td><td>Opens a pick list</td></tr>
+					<tr><td><code>.delBtn</code></td><td>Delete — something dies</td></tr>
+					<tr><td><code>.clrBtn</code></td><td>Clears or resets a form</td></tr>
+					<tr><td><code>.qutBtn</code></td><td><em>Deprecated</em> — quit without saving; use <code>.clrBtn</code> instead</td></tr>
+				</table>
+			</div>
+
+			<div class="guide-block">
+				<h3>Small / inline button variants</h3>
+				<div class="guide-demo guide-demo--white">
+					<div class="guide-btn-row">
+						<input class="cpyBtn" type="button" value="Copy (cpyBtn)">
+						<input class="pullBtn" type="button" value="Pull (pullBtn)">
+						<input class="savBtn smallBtn" type="button" value="Small (smallBtn modifier)">
+						<button class="frmCtlBtn">= (frmCtlBtn)</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3>Link-styled "buttons"</h3>
+				<div class="guide-demo guide-demo--white">
+					<div class="guide-btn-row">
+						<a class="godo" href="#">Do this (.godo)</a>
+						<a class="schlikeBtn" href="#">Find this (.schlikeBtn)</a>
+						<a class="schlikeBtn_sm" href="#">Find (.schlikeBtn_sm)</a>
+						<span class="controlButton">.controlButton</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>.expandoSelect</code> <span class="guide-note">looks button-like, expands a select into multiple</span></h3>
+				<div class="guide-demo guide-demo--white"><span class="expandoSelect" style="padding:.4em;">Show all options</span></div>
+			</div>
+		</section>
+
+		<!-- ============================================================ STATUS ============================================================ -->
+		<section class="guide-section" id="status">
+			<h2>Status &amp; state colors</h2>
+			<p class="guide-desc">Background-color cues applied to cells, rows, or fields to communicate state — required, valid, invalid, read-only, new, or zebra-striped.</p>
+
+			<div class="guide-block">
+				<h3>Field / pick feedback</h3>
+				<table class="guide-classtable">
+					<tr><th>Class</th><th>Meaning</th><th>Preview</th></tr>
+					<tr><td><code>.reqdClr</code></td><td>Required</td><td><span class="reqdClr">&nbsp;required field&nbsp;</span></td></tr>
+					<tr><td><code>.badPick</code></td><td>Fail</td><td><span class="badPick">&nbsp;invalid entry&nbsp;</span></td></tr>
+					<tr><td><code>.goodPick</code></td><td>Success</td><td><span class="goodPick">&nbsp;valid entry&nbsp;</span></td></tr>
+					<tr><td><code>.readClr</code></td><td>Read-only</td><td><span class="readClr">&nbsp;read only&nbsp;</span></td></tr>
+					<tr><td><code>.newRec</code></td><td>New / inserted record</td><td><span class="newRec">&nbsp;new record&nbsp;</span></td></tr>
+					<tr><td><code>.goodSaveBG</code></td><td>Save confirmation</td><td><span class="goodSaveBG">&nbsp;saved&nbsp;</span></td></tr>
+					<tr><td><code>.pickInput</code></td><td>Pick-list input background</td><td><input class="pickInput" value="lightyellow"></td></tr>
+				</table>
+			</div>
+
+			<div class="guide-block">
+				<h3>Row striping</h3>
+				<div class="guide-demo guide-demo--white" style="padding:0;">
+					<div class="evenRow" style="padding:.5em;">.evenRow</div>
+					<div class="oddRow" style="padding:.5em;">.oddRow</div>
+					<div class="evenRow" style="padding:.5em;">.evenRow</div>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>.notFound</code></h3>
+				<div class="guide-demo guide-demo--white"><div class="notFound">No records found.</div></div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>.expSoon</code> <span class="guide-note">session expiring soon</span></h3>
+				<div class="guide-demo guide-demo--white"><div class="expSoon" style="display:inline-block;">Session expires in 60 seconds</div></div>
+			</div>
+		</section>
+
+		<!-- ============================================================ FORMS ============================================================ -->
+		<section class="guide-section" id="forms">
+			<h2>Forms &amp; inputs</h2>
+			<p class="guide-desc">Sizing conventions for text areas/inputs, plus containers used to group form controls.</p>
+
+			<div class="guide-block">
+				<h3>Textarea size classes</h3>
+				<div class="guide-demo guide-demo--white">
+					<table class="guide-classtable">
+						<tr><th>Class</th><th>Size</th><th>Example</th></tr>
+						<tr><td><code>.tinytextarea</code></td><td>10em × 1.5em</td><td><textarea class="tinytextarea"></textarea></td></tr>
+						<tr><td><code>.smalltextarea</code></td><td>15em × 1.5em</td><td><textarea class="smalltextarea"></textarea></td></tr>
+						<tr><td><code>.mediumtextarea</code></td><td>30em × 1.5em</td><td><textarea class="mediumtextarea"></textarea></td></tr>
+						<tr><td><code>.largetextarea</code></td><td>30em × 3em</td><td><textarea class="largetextarea"></textarea></td></tr>
+						<tr><td><code>.longtextarea</code></td><td>60em × 1.5em</td><td><textarea class="longtextarea"></textarea></td></tr>
+						<tr><td><code>.hugetextarea</code></td><td>44em × 6em</td><td><textarea class="hugetextarea"></textarea></td></tr>
+						<tr><td><code>.gianttextarea</code></td><td>50em × 12em</td><td><textarea class="gianttextarea"></textarea></td></tr>
+						<tr><td><code>.addresstextarea</code></td><td>41em × 8em</td><td><textarea class="addresstextarea"></textarea></td></tr>
+					</table>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3>Input width classes</h3>
+				<div class="guide-demo guide-demo--white">
+					<div style="display:flex;flex-direction:column;gap:.5em;max-width:100%;">
+						<input class="minput" placeholder=".minput — 40em">
+						<input class="msinput" placeholder=".msinput — 25em">
+						<input class="sinput" placeholder=".sinput — 15em">
+					</div>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>fieldset</code> / <code>legend</code> <span class="guide-note">plus <code>fieldset.compact</code></span></h3>
+				<div class="guide-demo guide-demo--white">
+					<fieldset>
+						<legend>Standard fieldset</legend>
+						<label>Field label</label>
+						<input type="text" placeholder="value">
+					</fieldset>
+					<fieldset class="compact">
+						<legend>Compact fieldset</legend>
+						<label>Field label</label>
+						<input type="text" placeholder="value">
+					</fieldset>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>.oneFormSection</code> / <code>.oneFormSectionCompact</code></h3>
+				<div class="guide-demo guide-demo--white">
+					<div class="guide-flex">
+						<div class="oneFormSection">One form section (dotted border, spaced)</div>
+						<div class="oneFormSectionCompact">Compact form section</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>.carryStyle</code> <span class="guide-note">data-entry "carried forward" value</span></h3>
+				<div class="guide-demo guide-demo--white"><input class="carryStyle" value="carried value"></div>
+			</div>
+		</section>
+
+		<!-- ============================================================ TABLES ============================================================ -->
+		<section class="guide-section" id="tables">
+			<h2>Tables</h2>
+			<p class="guide-desc">Plain bordered tables plus a responsive pattern that collapses to stacked cards below 1200px.</p>
+
+			<div class="guide-block">
+				<h3><code>table.border</code></h3>
+				<div class="guide-demo guide-demo--white">
+					<table class="border">
+						<tr><th>Catalog #</th><th>Taxon</th><th>Locality</th></tr>
+						<tr><td>MVZ:Mamm:12345</td><td><em>Peromyscus maniculatus</em></td><td>California</td></tr>
+						<tr><td>MVZ:Mamm:12346</td><td><em>Thomomys bottae</em></td><td>Nevada</td></tr>
+					</table>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>.wideCollapseTable</code> <span class="guide-note">resize the window below 1200px to see cards</span></h3>
+				<div class="guide-demo guide-demo--white">
+					<table class="wideCollapseTable" style="width:100%;">
+						<thead>
+							<tr><th>Catalog #</th><th>Taxon</th><th>Locality</th></tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td data-label="Catalog #">MVZ:Mamm:12345</td>
+								<td data-label="Taxon">Peromyscus maniculatus</td>
+								<td data-label="Locality">California</td>
+							</tr>
+							<tr>
+								<td data-label="Catalog #">MVZ:Mamm:12346</td>
+								<td data-label="Taxon">Thomomys bottae</td>
+								<td data-label="Locality">Nevada</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<p class="guide-note">Requires a <code>data-label</code> attribute on each <code>&lt;td&gt;</code> for the collapsed-card labels.</p>
+			</div>
+		</section>
+
+		<!-- ============================================================ TOOLTIPS ============================================================ -->
+		<section class="guide-section" id="tooltips">
+			<h2>Tooltips &amp; details</h2>
+			<p class="guide-desc">Hover-triggered tooltips and native <code>&lt;details&gt;</code> expanders with two style variants.</p>
+
+			<div class="guide-block">
+				<h3><code>.tooltip</code> / <code>.tooltiptext</code></h3>
+				<div class="guide-demo guide-demo--white">
+					<span class="tooltip">hover for definition
+						<span class="tooltiptext">This is the tooltip content.</span>
+					</span>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>details.expdet</code></h3>
+				<div class="guide-demo guide-demo--white">
+					<details class="expdet">
+						<summary>Click to expand</summary>
+						<p>Expanded detail content goes here.</p>
+					</details>
+				</div>
+			</div>
+
+			<div class="guide-block">
+				<h3><code>details.bluearrow</code></h3>
+				<div class="guide-demo guide-demo--white">
+					<details class="bluearrow">
+						<summary>Blue arrow summary</summary>
+						<p>Expanded detail content goes here.</p>
+					</details>
+				</div>
+			</div>
+		</section>
+
+		<!-- ============================================================ UTILITIES ============================================================ -->
+		<section class="guide-section" id="utilities">
+			<h2>Utility classes</h2>
+			<p class="guide-desc">Small single-purpose helpers used throughout the site.</p>
+			<table class="guide-classtable">
+				<tr><th>Class</th><th>Effect</th></tr>
+				<tr><td><code>.nowrap</code></td><td>white-space: nowrap</td></tr>
+				<tr><td><code>.valigntop</code></td><td>vertical-align: top (table cells)</td></tr>
+				<tr><td><code>.indent</code></td><td>Hanging indent / 5% left margin (defined twice — later block-display rule wins)</td></tr>
+				<tr><td><code>.smaller</code></td><td>font-size: .8em</td></tr>
+				<tr><td><code>.scrollyTextBlock</code></td><td>Scrollable block, max-height 30em, max-width 80%</td></tr>
+				<tr><td><code>.copyalert</code></td><td>Small "copied" notice text</td></tr>
+				<tr><td><code>.divStatusByUser</code></td><td>Scrollable status list, max-height 30em</td></tr>
+				<tr><td><code>.containerTableStyle table *</code></td><td>Strips borders from nested tables (container tree widget)</td></tr>
+			</table>
+		</section>
+
+	</main>
+</div>
+
+</body>
+</html>
